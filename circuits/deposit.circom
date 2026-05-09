@@ -1,31 +1,23 @@
-pragma circom 2.1.6;
-
-include "../node_modules/circomlib/circuits/poseidon.circom";
+pragma circom 2.0.0;
+include "circomlib/circuits/poseidon.circom";
 
 /// Deposit commitment circuit.
-///
-/// Proves that a commitment is correctly formed as:
-///   commitment = Poseidon(secret, nullifier_secret, amount)
-///
-/// Public inputs:  commitment
-/// Private inputs: secret, nullifier_secret, amount
-
+/// commitment = Poseidon(secret, amount, tokenId)
 template Deposit() {
     // Private inputs
     signal input secret;
-    signal input nullifierSecret;
     signal input amount;
+    signal input tokenId;
 
     // Public output
     signal output commitment;
 
-    // Compute commitment = Poseidon(secret, nullifierSecret, amount)
     component hasher = Poseidon(3);
     hasher.inputs[0] <== secret;
-    hasher.inputs[1] <== nullifierSecret;
-    hasher.inputs[2] <== amount;
+    hasher.inputs[1] <== amount;
+    hasher.inputs[2] <== tokenId;
 
     commitment <== hasher.out;
 }
 
-component main {public []} = Deposit();
+component main = Deposit();

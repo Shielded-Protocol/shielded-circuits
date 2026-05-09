@@ -1,12 +1,21 @@
 import { expect } from "chai";
 // @ts-ignore — circom_tester has no type declarations
 import { wasm as circomTester } from "circom_tester";
+// @ts-ignore — circomlibjs has no type declarations
+import { buildPoseidon } from "circomlibjs";
 import path from "path";
+import { fileURLToPath } from "url";
 
-describe("Deposit Circuit", () => {
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+describe("Deposit Circuit", function () {
+  this.timeout(120000);
   let circuit: any;
+  let poseidon: any;
 
   before(async () => {
+    poseidon = await buildPoseidon();
     circuit = await circomTester(
       path.join(__dirname, "../circuits/deposit.circom"),
       {
@@ -15,72 +24,24 @@ describe("Deposit Circuit", () => {
     );
   });
 
-  it("should compute a valid commitment from secret, nullifierSecret, and amount", async () => {
+  function hash(inputs: any[]) {
+    const res = poseidon(inputs);
+    return poseidon.F.toObject(res);
+  }
+
+  it("should compute a valid commitment from secret, amount, and tokenId", async () => {
     const input = {
       secret: "12345",
-      nullifierSecret: "67890",
       amount: "1000000",
+      tokenId: "1",
     };
 
-    const witness = await circuit.calculateWitness(input, true);
+    const expectedCommitment = hash([input.secret, input.amount, input.tokenId]);
+
+    const witness = await circuit.calculateWitness(input);
     await circuit.checkConstraints(witness);
-
-    // The commitment (output signal) should be non-zero
-    const commitment = witness[1]; // First output signal
-    expect(commitment.toString()).to.not.equal("0");
-  });
-
-  it("should produce different commitments for different secrets", async () => {
-    const input1 = {
-      secret: "11111",
-      nullifierSecret: "22222",
-      amount: "1000000",
-    };
-
-    const input2 = {
-      secret: "33333",
-      nullifierSecret: "22222",
-      amount: "1000000",
-    };
-
-    const witness1 = await circuit.calculateWitness(input1, true);
-    const witness2 = await circuit.calculateWitness(input2, true);
-
-    const commitment1 = witness1[1];
-    const commitment2 = witness2[1];
-
-    expect(commitment1.toString()).to.not.equal(commitment2.toString());
-  });
-
-  it("should produce different commitments for different amounts", async () => {
-    const input1 = {
-      secret: "11111",
-      nullifierSecret: "22222",
-      amount: "1000000",
-    };
-
-    const input2 = {
-      secret: "11111",
-      nullifierSecret: "22222",
-      amount: "2000000",
-    };
-
-    const witness1 = await circuit.calculateWitness(input1, true);
-    const witness2 = await circuit.calculateWitness(input2, true);
-
-    expect(witness1[1].toString()).to.not.equal(witness2[1].toString());
-  });
-
-  it("should produce deterministic commitments for the same inputs", async () => {
-    const input = {
-      secret: "12345",
-      nullifierSecret: "67890",
-      amount: "1000000",
-    };
-
-    const witness1 = await circuit.calculateWitness(input, true);
-    const witness2 = await circuit.calculateWitness(input, true);
-
-    expect(witness1[1].toString()).to.equal(witness2[1].toString());
+    
+    // Check output commitment
+    await circuit.assertOut(witness, { commitment: expectedCommitment });
   });
 });

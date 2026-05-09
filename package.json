@@ -3,19 +3,22 @@
   "version": "0.1.0",
   "description": "ZK circuits for the Shielded Protocol (Groth16/BN254/Circom)",
   "private": true,
+  "type": "module",
   "scripts": {
     "compile": "bash scripts/compile.sh",
     "setup": "bash scripts/setup.sh",
     "export": "bash scripts/export_verifier.sh",
-    "test": "mocha --require ts-node/register test/**/*.test.ts --timeout 120000",
+    "test": "NODE_OPTIONS='--loader ts-node/esm --no-warnings' mocha test/**/*.test.ts --timeout 120000",
     "lint": "eslint test/ --ext .ts"
   },
   "devDependencies": {
+    "@types/chai": "^5.2.3",
     "@types/mocha": "^10.0.6",
     "@types/node": "^20.11.0",
     "chai": "^4.4.1",
     "circom_tester": "^0.0.20",
     "circomlib": "^2.0.5",
+    "circomlibjs": "^0.1.7",
     "eslint": "^8.56.0",
     "mocha": "^10.3.0",
     "snarkjs": "^0.7.3",
