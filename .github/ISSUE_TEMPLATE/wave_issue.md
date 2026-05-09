@@ -1,20 +1,27 @@
 ---
-name: "\U0001F30A Wave Issue"
-about: Track a development wave milestone
-title: "[WAVE] "
-labels: wave
-assignees: ''
+name: Wave issue
+about: Issue tagged for Stellar Wave contributors
+labels: status:wave-ready
 ---
 
-## Wave Description
+## What needs to be done
+[Exact description. What the end state looks like. Be specific.]
 
-<!-- Describe the wave milestone and its goals -->
+## Why this matters
+[One sentence on the value to the protocol.]
 
-## Deliverables
+## Where to start
+- File(s) to look at: `src/...`
+- Related: #[issue or PR number]
+- Docs: [link if relevant]
 
-- [ ] Deliverable 1
-- [ ] Deliverable 2
+## Definition of done
+- [ ] [Specific testable criterion]
+- [ ] Tests added / updated
+- [ ] Docs updated if behavior changed
 
-## Acceptance Criteria
+## Estimated time
+[30 min · 2 hrs · half day]
 
-<!-- What must be true for this wave to be considered complete? -->
+## Required knowledge
+[Be honest. What does the contributor need to know?]

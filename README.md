@@ -1,75 +1,36 @@
-# Shielded Circuits
+# shielded-circuits
 
-Zero-knowledge circuits for the Shielded Protocol, built with [Circom 2.x](https://docs.circom.io/).
+> ZK circuits for the Shielded Protocol, built with Circom.
 
-## Overview
+Part of [shielded-protocol](https://github.com/Shielded-Protocol) — 
+private, compliant DeFi on Stellar.
 
-These circuits implement the ZK proof system (Groth16 over BN254) that powers private transactions on Stellar Soroban. Users generate proofs off-chain using these circuits, which are then verified on-chain by the `groth16-verifier` contract.
+[![CI](https://github.com/Shielded-Protocol/shielded-circuits/actions/workflows/ci.yml/badge.svg)](https://github.com/Shielded-Protocol/shielded-circuits/actions)
+[![Stellar Wave](https://img.shields.io/badge/Stellar-Wave-blue)](https://drips.network/wave/stellar)
 
-## Circuits
+## What this does
 
-| Circuit | Description |
-|---|---|
-| `deposit.circom` | Proves correct commitment formation: `commitment = Poseidon(secret, nullifier, amount)` |
-| `withdraw.circom` | Main circuit — proves knowledge of secret + Merkle tree inclusion |
-| `merkle_proof.circom` | Merkle inclusion proof (20 levels, Poseidon hash) |
-| `nullifier_hash.circom` | Deterministic nullifier derivation from secret |
-| `poseidon.circom` | Poseidon hash wrapper (from circomlib) |
-| `lib/commitment.circom` | Commitment hasher component |
+These circuits implement the zero-knowledge proof system (Groth16 over BN254) that powers private transactions on Stellar Soroban. Users generate proofs off-chain using these circuits, which are then verified on-chain by the `groth16-verifier` contract.
 
-## Getting Started
+The repository includes circuits for deposits, withdrawals, Merkle inclusion proofs, and nullifier derivation.
 
-### Prerequisites
-
-- [Node.js](https://nodejs.org/) >= 18
-- [Circom](https://docs.circom.io/getting-started/installation/) 2.x
-- [snarkjs](https://github.com/iden3/snarkjs)
-
-### Install
+## Quickstart
 
 ```bash
 npm install
-```
-
-### Compile Circuits
-
-```bash
 npm run compile
-# or directly:
-bash scripts/compile.sh
-```
-
-### Trusted Setup (Development Only)
-
-```bash
-npm run setup
-```
-
-⚠️ **WARNING:** The local setup is for development only. Production deployments require a multi-party computation (MPC) ceremony.
-
-### Run Tests
-
-```bash
 npm test
 ```
 
-### Export Verifier Keys
+## Architecture
 
-```bash
-npm run export
-```
-
-## Security
-
-The security of the protocol depends on:
-1. The soundness of the Groth16 proof system
-2. The collision resistance of Poseidon hash
-3. The integrity of the trusted setup ceremony
+[Link to shielded-docs](https://github.com/Shielded-Protocol/shielded-docs)
 
 ## Contributing
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md).
+See [CONTRIBUTING.md](./CONTRIBUTING.md).  
+Browse [Wave-ready issues](../../issues?q=label%3Astatus%3Awave-ready).
 
 ## License
 
-Apache-2.0
+MIT

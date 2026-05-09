@@ -1,15 +1,19 @@
-## Summary
+## What this does
+[One paragraph. What changed and why.]
 
-<!-- Brief description of the changes -->
-
-## Related Issues
-
-<!-- Closes #XX -->
+## Type
+- [ ] Bug fix
+- [ ] New feature
+- [ ] Refactor
+- [ ] Documentation
+- [ ] Tests
 
 ## Checklist
+- [ ] Tests pass locally
+- [ ] Docs updated (if behavior changed)
+- [ ] Tested on Stellar testnet (if contracts changed)
+- [ ] No new lint/clippy warnings
+- [ ] Issue linked
 
-- [ ] Circuits compile without errors
-- [ ] All tests pass (`npm test`)
-- [ ] No unused signals or constraints
-- [ ] Constraint count is documented for modified circuits
-- [ ] Security implications reviewed
+## Notes for reviewer
+[Optional context]
